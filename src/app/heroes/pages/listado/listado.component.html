@@ -1,1 +1,5 @@
 <p>listado works!</p>
+<button (click)="showHeroes()" >Ver heroes</button>
+<ul *ngFor="let heroe of heroes">
+    <li>{{heroe.superhero}}</li>
+</ul>
