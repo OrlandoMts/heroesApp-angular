@@ -1,5 +1,9 @@
-<p>listado works!</p>
-<button (click)="showHeroes()" >Ver heroes</button>
-<ul *ngFor="let heroe of heroes">
-    <li>{{heroe.superhero}}</li>
-</ul>
+
+<h2>Listado de Heroes</h2>
+<mat-divider></mat-divider>
+<br>
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="1em">
+    <div fxFlex="20" fxFlex.sm="30" fxFlex.lg="15" *ngFor="let heroe of heroes">
+        <app-heroe-tarjeta [heroe]="heroe" ></app-heroe-tarjeta>
+    </div>
+</div>

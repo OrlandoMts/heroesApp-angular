@@ -5,8 +5,7 @@ import { HeroesService } from '../../services/heroes.service';
 @Component({
   selector: 'app-listado',
   templateUrl: './listado.component.html',
-  styles: [
-  ]
+  styles: []
 })
 export class ListadoComponent implements OnInit {
 
@@ -15,6 +14,7 @@ export class ListadoComponent implements OnInit {
   constructor(private heroesService: HeroesService) { }
 
   ngOnInit(): void {
+    this.showHeroes();
   }
 
   showHeroes() {

@@ -14,4 +14,9 @@ export class HeroesService {
     const URL = 'http://localhost:3000/heroes';
     return this.http.get<Heroe[]>(URL);
   }
+
+  getHeroeById(id: string): Observable<Heroe> {
+    const URL = `http://localhost:3000/heroes/${id}`;
+    return this.http.get<Heroe>(URL);
+  }
 }
