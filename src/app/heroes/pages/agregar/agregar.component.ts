@@ -1,11 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap } from 'rxjs';
 import { Heroe, Publisher } from '../../interfaces/heroes.interface';
 import { HeroesService } from '../../services/heroes.service';
 
 @Component({
   selector: 'app-agregar',
   templateUrl: './agregar.component.html',
-  styles: [
+  styles: [`
+      img {
+        width: 100%;
+        border-radius: 5px;
+      }
+    `
   ]
 })
 export class AgregarComponent implements OnInit {
@@ -24,21 +31,57 @@ export class AgregarComponent implements OnInit {
     alt_img:   ''
   };
 
-  constructor(private heroesService: HeroesService) { }
+  constructor(private heroesService: HeroesService, 
+              private activatedRoute: ActivatedRoute, 
+              private router: Router) { }
 
   ngOnInit(): void {
+    // Es para saber en que pagina estoy, si en agregar o editar
+    // Así evito que se haga la peticion al servicio cuando voy a agregar,
+    // esto retornaba undefined
+    if(!this.router.url.includes('editar')){
+      return
+    }
+    this.activatedRoute.params
+        .pipe(
+          switchMap(({id}) => this.heroesService.getHeroeById(id))
+        )
+        .subscribe({
+          next: (heroe) => this.heroe = heroe
+        })
   }
 
   guardarHeroe() {
+    
     if(this.heroe.superhero.trim().length === 0){
       return
     }
+    // Cuando el heroe tenga un id significa que se quiere actualizar
+    if (this.heroe.id){
+        //Actualizar
+        this.heroesService.putActualizarHeroe(this.heroe)
+            .subscribe({
+              next: (heroe) => console.log('Actualizado: ', heroe)
+            });
+    } else {
+      // Insertar
+      // En lugar de un console.log puedo usar navigate del Router
+      this.heroesService.postAgregarHeroe(this.heroe)
+          .subscribe({
+            next: (heroe) => console.log('Insertado: ', heroe)
+          })
+    }
 
-    this.heroesService.postAgregarHeroe(this.heroe)
+  }
+
+  borrar() {
+    this.heroesService.eliminarHeroe(this.heroe.id!)
         .subscribe({
-          next: (resp) => console.log('Respuesta', resp)
+          next: (resp) => {
+            console.log('Eliminado: ', resp);
+            this.router.navigate(['/heroes']);
+          }
         })
-    
   }
 
 }

@@ -56,10 +56,23 @@
 
         <br>
 
-        <button mat-raised-button color="primary" (click)="guardarHeroe()">
-            <mat-icon>save</mat-icon>
-            Guardar
-        </button>
+        <div fxLayout="row">
+            <button mat-raised-button 
+                    color="primary" 
+                    (click)="guardarHeroe()"
+                    routerLink="/heroes/listado">
+                <mat-icon>save</mat-icon>
+                Guardar
+            </button>
+            <span class="spacer"></span>
+            <button *ngIf="heroe.id"
+                    mat-raised-button
+                    color="warn"
+                    (click)="borrar()">
+                <mat-icon>remove</mat-icon>
+                Borrar heroe
+            </button>
+        </div>
 
     </div>
     <div fxFlex="50">
