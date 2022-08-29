@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { Heroe, Publisher } from '../../interfaces/heroes.interface';
@@ -33,7 +34,8 @@ export class AgregarComponent implements OnInit {
 
   constructor(private heroesService: HeroesService, 
               private activatedRoute: ActivatedRoute, 
-              private router: Router) { }
+              private router: Router,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     // Es para saber en que pagina estoy, si en agregar o editar
@@ -61,14 +63,14 @@ export class AgregarComponent implements OnInit {
         //Actualizar
         this.heroesService.putActualizarHeroe(this.heroe)
             .subscribe({
-              next: (heroe) => console.log('Actualizado: ', heroe)
+              next: (heroe) => this.mostrarSnackBar('Heroe actualizado')
             });
     } else {
       // Insertar
       // En lugar de un console.log puedo usar navigate del Router
       this.heroesService.postAgregarHeroe(this.heroe)
           .subscribe({
-            next: (heroe) => console.log('Insertado: ', heroe)
+            next: (heroe) => this.mostrarSnackBar('Heroe registrado')
           })
     }
 
@@ -80,8 +82,15 @@ export class AgregarComponent implements OnInit {
           next: (resp) => {
             console.log('Eliminado: ', resp);
             this.router.navigate(['/heroes']);
+            this.mostrarSnackBar('Heroe eliminado');
           }
         })
+  }
+
+  mostrarSnackBar(msj: string): void {
+    this.snackBar.open(msj, 'ok!', {
+      duration: 2000
+    })
   }
 
 }
