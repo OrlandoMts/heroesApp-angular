@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
   constructor( private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-    // this.username = this.authService.getUsername()
   }
 
   get auth() {

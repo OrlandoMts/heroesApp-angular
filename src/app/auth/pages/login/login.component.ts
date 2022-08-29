@@ -19,7 +19,8 @@ export class LoginComponent implements OnInit {
     this.authService.login()
       .subscribe({
         next: data => {
-          data.id ? this.router.navigate(['/heroes']) : this.router.navigate(['/auth']);
+          {console.log(data);
+          data.id ? this.router.navigate(['/heroes']) : this.router.navigate(['/auth']);}
         },
         error: () => this.router.navigate(['/auth'])
       })

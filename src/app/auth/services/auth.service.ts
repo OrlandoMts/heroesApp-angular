@@ -17,12 +17,18 @@ export class AuthService {
   login(): Observable<Auth> {
     return this.http.get<Auth>(`${this.URL}/usuarios/1`)
                .pipe(
-                tap(auth => this._auth = auth)
+                // El tap genera efectos secundarios
+                tap(auth => this._auth = auth), //Aqui lleno la data del objeto emitido por el observable
+                tap( auth => localStorage.setItem('id', auth.id))
                )
   }
 
+  logout() {
+    this._auth = undefined;
+  }
+
   get username(): Auth {
-    return {...this._auth!};
+    return {...this._auth!}; // Devuelvo el objeto y rompo la referencia. El ! es porque se que no de volver'a undefined
   }
 
 }
