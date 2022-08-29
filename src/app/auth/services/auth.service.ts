@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, of, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Auth } from '../interfaces/auth.interfaces';
 
@@ -23,8 +23,22 @@ export class AuthService {
                )
   }
 
-  logout() {
+  logout() { //Vaciar el localstorage
     this._auth = undefined;
+  }
+
+  verificaAutenticacion(): Observable<boolean>{
+    if(!localStorage.getItem('id')) {
+      return of(false); // Crea observavbles en base al argumento
+    }
+
+    return this.http.get<Auth>(`${this.URL}/usuarios/1`)
+               .pipe(
+                  map(auth => {
+                    this._auth = auth;
+                    return true; //Transforma lo que recibe del Observable y retornar un nuevo valor
+                  }) 
+               )
   }
 
   get username(): Auth {
