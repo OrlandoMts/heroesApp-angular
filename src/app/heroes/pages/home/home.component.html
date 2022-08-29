@@ -29,7 +29,8 @@
             <span>Heroes App</span>
 
             <span class="spacer"></span>
-            <button mat-stroked-button>Salir</button>
+            <span>{{auth.usuario}}</span>
+            <button mat-stroked-button (click)="logout()">Salir</button>
         </mat-toolbar-row>
     </mat-toolbar>
 
